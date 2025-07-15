@@ -1,6 +1,5 @@
 Flask==3.1.1
 manim==0.19.0
-re
 shutil
 subprocess
 numpy
