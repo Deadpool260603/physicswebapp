@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="static/style.css">
+    <title>Physics Video Generator</title>
+</head>
+<body>
+    <h1>Physics Video Generator</h1>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form action="/generate" method="post">
+        <label for="question">Enter a function</label><br>
+        <input type="text" id="question" name="question" placeholder="e.g. x**2 or x^2" required><br><br>
+        <label>X-axis range:</label><br>
+        Min: <input type="number" name="x_min" value="-5">
+        Max: <input type="number" name="x_max" value="5"><br><br>
+
+        <label>Y-axis range:</label><br>
+        Min: <input type="number" name="y_min" value="-5">
+        Max: <input type="number" name="y_max" value="5"><br><br>
+
+        <button type="submit">Generate Video</button>
+    </form>
+</body>
+</html>
