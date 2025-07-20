@@ -1,5 +1,0 @@
-Flask
-Werkzeug
-numpy
-manim
-python-dotenv
