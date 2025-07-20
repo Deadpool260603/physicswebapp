@@ -1,14 +1,84 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, flash
 import subprocess
 import shutil
 import os
 import re
+from werkzeug.security import generate_password_hash, check_password_hash
+import sqlite3
 
 app = Flask(__name__)
+app.secret_key = "devkey123"
+
+
+#------- Database--------
+def init_db():
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute('''
+       CREATE TABLE IF NOT EXISTS users (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT NOT NULL UNIQUE,
+          password TEXT NOT NULL
+       )
+    ''')
+    conn.commit()
+    conn.close()
+
+init_db()
 
 @app.route("/")
 def index():
-    return render_template("index1.html")
+    if 'user_id' in session:
+        return render_template("index.html", username=session['username'])
+    return redirect("/login")
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+        c.execute('''SELECT id, password FROM users WHERE username = ?''', (username,))
+        user = c.fetchone()
+        conn.close()
+
+        if user and check_password_hash(user[1], password):
+            session['user_id'] = user[0]
+            session['username'] = username
+            return redirect("/")
+        else:
+            flash("Invalid username or password", category="error")
+    return render_template("login.html")
+
+@app.route("/signup", methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = generate_password_hash(request.form['password'])
+
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+        c.execute("SELECT * FROM users WHERE username = ?", (username,))
+        existing_user = c.fetchone()
+
+        if existing_user:
+            flash("Username already taken", category="error")
+            conn.close()
+            return render_template("signup.html")
+
+        # Proceed to insert if not exists
+        c.execute("INSERT INTO users (username, password) VALUES(?, ?)", (username, password))
+        conn.commit()
+        conn.close()
+        flash("Account created successfully 👍", category="success")
+        return redirect("/login")
+    return render_template("signup.html")
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
 
 @app.route("/generate", methods=["POST"])
 def generate():
@@ -33,7 +103,7 @@ def generate():
     dest_path = os.path.join("static", "user_plot.mp4")
     shutil.copy(source_path, dest_path)
 
-    return render_template("result1.html", question=user_function, video_path="user_plot.mp4")
+    return render_template("result.html", question=user_function, video_path="user_plot.mp4")
 
 # converts user input to LaTeX
 def convert_to_latex(expr):

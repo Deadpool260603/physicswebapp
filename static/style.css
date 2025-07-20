@@ -31,7 +31,7 @@ input[type="text"], textarea {
     background-color: #f0f0f0;
 }
 
-button, input[type="submit"] {
+button {
     margin-top: 20px;
     padding: 10px 20px;
     background-color: #0044cc;
@@ -42,10 +42,14 @@ button, input[type="submit"] {
     font-size: 16px;
 }
 
-button:hover, input[type="submit"]:hover {
+button:hover :hover {
     background-color: #0033aa;
 }
 
+a {
+    color: white;
+    text-decoration: none;
+}
 
 video {
     margin-top: 20px;
@@ -57,6 +61,7 @@ video {
 @media (max-width: 600px) {
     .container {
         width: 90%;
+        margin_top: 20px;
         padding: 20px;
     }
 }

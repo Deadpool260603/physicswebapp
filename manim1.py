@@ -13,12 +13,12 @@ class UserFunctionPlot(Scene):
 
         # Display LaTeX version
         
-        latex_label = MathTex(r"f(x) = x^{2}")
+        latex_label = MathTex(r"f(x) = \exp(-x)")
         latex_label.to_corner(UL)
         self.play(Write(latex_label))
 
         try:
-            func = lambda x: eval("x**2", {"np": np, "x": x})
+            func = lambda x: eval("np.exp(-x)", {"np": np, "x": x})
             graph = axes.plot(func, color=BLUE)
             self.play(Create(graph), run_time=2)
             self.wait(1)

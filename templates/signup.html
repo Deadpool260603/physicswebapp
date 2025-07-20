@@ -3,15 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="static/style.css">
-    <title>Login</title>
+    <title>Signup</title>
     <style>
       .flashes {
           list-style-type: none;
           padding: 10px;
-      }
-      .success {
-          color: green;
-          font-weight: bold;
       }
       .error {
           color: red;
@@ -20,8 +16,7 @@
     </style>
 </head>
 <body>
-    <h1>Welcome</h1>
-
+    <h2>Sign Up</h2>
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <ul class="flashes">
@@ -32,14 +27,12 @@
         {% endif %}
     {% endwith %}
 
-    <form method="POST" action="/login">
-      <h2>Login</h2>
-      <input type="text" name="username" required placeholder="Username">
-      <input type="password" name="password" required placeholder="Password">
-      <button type="submit">Login</button>
+    <form method="POST" action="/signup">
+        <input type="text" name="username" required placeholder="Username">
+        <input type="password" name="password" required placeholder="Password">
+        <button type="submit">Signup</button>
     </form>
-     <form method="GET" action="/signup">
-         <p>Don't have an account? <button>Signup</button></p>
-     </form>
+
+    <p>Already have an account? <a href="/login">Login</a></p>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/style.css">
     <title>Physics Video Generator</title>
 </head>
 <body>
@@ -12,14 +12,19 @@
         <p style="color: red;">{{ error }}</p>
     {% endif %}
 
-    <form action="{{ url_for('generate') }}" method="post">
-        <label for="question">Enter your physics question:</label><br>
-        <input type="text" id="question" name="question" required><br><br>
+    <form action="/generate" method="post">
+        <label for="question">Enter a function</label><br>
+        <input type="text" id="question" name="question" placeholder="e.g. x**2 or x^2" required><br><br>
+        <label>X-axis range:</label><br>
+        Min: <input type="number" name="x_min" value="-5">
+        Max: <input type="number" name="x_max" value="5"><br><br>
+
+        <label>Y-axis range:</label><br>
+        Min: <input type="number" name="y_min" value="-5">
+        Max: <input type="number" name="y_max" value="5"><br><br>
+
         <button type="submit">Generate Video</button>
     </form>
-
-    <br>
-    <a href="{{ url_for('register') }}">Register</a> |
-    <a href="{{ url_for('login') }}">Login</a>
+    <form action="/logout" method="GET"><button>Logout</button></form>
 </body>
 </html>
